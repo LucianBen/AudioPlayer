@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -60,6 +61,7 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.exitToPreviousPage
 
 class MainActivity : ComponentActivity() {
     private val requestedMedia = MutableStateFlow<String?>(null)
+    private val clickThrottle = ClickThrottle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +71,9 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             val colors = if (isSystemInDarkTheme()) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
             MaterialTheme(colorScheme = colors) {
-                Surface { AudioPlayerNavigation(application as AudioPlayerApp) }
+                CompositionLocalProvider(LocalClickThrottle provides clickThrottle) {
+                    Surface { AudioPlayerNavigation(application as AudioPlayerApp) }
+                }
             }
         }
     }

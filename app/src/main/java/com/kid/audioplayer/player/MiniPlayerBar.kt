@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.kid.audioplayer.BookImage
 import com.kid.audioplayer.data.BookRepository
+import com.kid.audioplayer.throttledClick
 import java.io.File
 import kotlinx.coroutines.delay
 
@@ -94,9 +95,11 @@ internal fun MiniPlayerBar(
                 File(book.directory, book.cover),
                 "《${book.title}》封面",
                 Modifier.size(width = 64.dp, height = 80.dp)
-                    .clickable(role = Role.Button, onClickLabel = "打开播放页面") {
-                        if (isCurrent()) onOpen(mediaId)
-                    },
+                    .clickable(
+                        role = Role.Button,
+                        onClickLabel = "打开播放页面",
+                        onClick = throttledClick { if (isCurrent()) onOpen(mediaId) },
+                    ),
             )
             Column(Modifier.weight(1f)) {
                 Text(book.title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)

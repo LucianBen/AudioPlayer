@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kid.audioplayer.throttledClick
 
 private val unitPrefix = Regex("""^Unit\s+\d+\b""", RegexOption.IGNORE_CASE)
 
@@ -30,7 +31,7 @@ fun CatalogScreen(model: CatalogViewModel, onBack: () -> Unit, openUnit: (Int) -
     val book by model.book.collectAsStateWithLifecycle()
     Scaffold(topBar = {
         TopAppBar(title = { Text(book?.title ?: "目录") }, navigationIcon = {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回书库") }
+            IconButton(onClick = throttledClick(onBack)) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回书库") }
         })
     }) { padding ->
         LazyColumn(Modifier.padding(padding)) {
@@ -46,7 +47,7 @@ fun CatalogScreen(model: CatalogViewModel, onBack: () -> Unit, openUnit: (Int) -
                     leadingContent = if (prefix != null && heading.isNotEmpty()) {
                         { UnitLabel(prefix) }
                     } else null,
-                    modifier = Modifier.fillMaxWidth().clickable { openUnit(index) },
+                    modifier = Modifier.fillMaxWidth().clickable(onClick = throttledClick { openUnit(index) }),
                 )
             }
         }

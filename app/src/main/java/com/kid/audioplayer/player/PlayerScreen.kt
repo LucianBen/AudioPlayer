@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kid.audioplayer.R
+import com.kid.audioplayer.throttledClick
 import kotlin.math.roundToLong
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,11 +48,11 @@ fun PlayerScreen(model: PlayerViewModel, onBack: () -> Unit) {
     val state by model.state.collectAsStateWithLifecycle()
     Scaffold(topBar = {
         TopAppBar(title = { Text(state.unit?.title ?: "播放器", maxLines = 1, overflow = TextOverflow.Ellipsis) },
-            navigationIcon = { IconButton(onClick = onBack) {
+            navigationIcon = { IconButton(onClick = throttledClick(onBack)) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回")
             } },
             actions = {
-                TextButton(model::toggleMode, enabled = state.canUseSentences && state.ready) {
+                TextButton(throttledClick(model::toggleMode), enabled = state.canUseSentences && state.ready) {
                     Text(if (state.bySentence) "按句跳转" else "按秒跳转")
                 }
             })
@@ -89,7 +90,7 @@ private fun Controls(model: PlayerViewModel, state: PlayerState) {
         Text(DateUtils.formatElapsedTime(state.durationMs / 1000))
     }
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        IconButton(model::playFromStart, modifier = Modifier.weight(1f), enabled = state.ready) {
+        IconButton(throttledClick(model::playFromStart), modifier = Modifier.weight(1f), enabled = state.ready) {
             Icon(painterResource(R.drawable.ic_playback_restart), "从头播放", Modifier.size(playbackIconSize))
         }
         TransportButtons(
@@ -116,7 +117,7 @@ private fun PlaybackSpeedMenu(speed: Float, enabled: Boolean, onSelect: (Float) 
     val label = "x${speed.toString().removeSuffix(".0")}"
     Box(modifier, contentAlignment = Alignment.Center) {
         TextButton(
-            onClick = { expanded = true },
+            onClick = throttledClick { expanded = true },
             enabled = enabled,
             contentPadding = PaddingValues(horizontal = 2.dp),
             modifier = Modifier.semantics { contentDescription = "播放速度 $label" },
@@ -133,7 +134,7 @@ private fun PlaybackSpeedMenu(speed: Float, enabled: Boolean, onSelect: (Float) 
                             else MaterialTheme.colorScheme.onSurface,
                         )
                     },
-                    onClick = {
+                    onClick = throttledClick {
                         expanded = false
                         onSelect(option)
                     },

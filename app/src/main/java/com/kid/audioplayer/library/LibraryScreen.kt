@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kid.audioplayer.BookImage
 import com.kid.audioplayer.R
+import com.kid.audioplayer.throttledClick
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +50,7 @@ fun LibraryScreen(model: LibraryViewModel, openBook: (String) -> Unit) {
 
     Scaffold(topBar = {
         TopAppBar(title = { Text("书库") }, actions = {
-            IconButton(onClick = { picker.launch(null) }, enabled = !state.busy) {
+            IconButton(onClick = throttledClick { picker.launch(null) }, enabled = !state.busy) {
                 Icon(painterResource(R.drawable.ic_folder_open), "导入书籍目录")
             }
         })
@@ -71,7 +72,7 @@ fun LibraryScreen(model: LibraryViewModel, openBook: (String) -> Unit) {
                     Card {
                         Column(Modifier.fillMaxWidth().combinedClickable(
                             enabled = !state.busy,
-                            onClick = { openBook(book.id) },
+                            onClick = throttledClick { openBook(book.id) },
                             onLongClickLabel = "删除书籍",
                             onLongClick = { deletingId = book.id },
                         ).padding(10.dp)) {
@@ -89,15 +90,20 @@ fun LibraryScreen(model: LibraryViewModel, openBook: (String) -> Unit) {
             onDismissRequest = { deletingId = null },
             title = { Text("删除《${book.title}》？") },
             text = { Text("书籍将从书库和应用存储中移除。") },
-            confirmButton = { TextButton(onClick = { deletingId = null; model.deleteBook(book.id) }) { Text("删除") } },
-            dismissButton = { TextButton(onClick = { deletingId = null }) { Text("取消") } },
+            confirmButton = {
+                TextButton(onClick = throttledClick {
+                    deletingId = null
+                    model.deleteBook(book.id)
+                }) { Text("删除") }
+            },
+            dismissButton = { TextButton(onClick = throttledClick { deletingId = null }) { Text("取消") } },
         )
     }
     state.message?.let { message ->
         AlertDialog(
             onDismissRequest = model::dismissMessage,
             text = { Text(message) },
-            confirmButton = { TextButton(onClick = model::dismissMessage) { Text("确定") } },
+            confirmButton = { TextButton(onClick = throttledClick(model::dismissMessage)) { Text("确定") } },
         )
     }
 }

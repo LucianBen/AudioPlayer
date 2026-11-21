@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kid.audioplayer.R
+import com.kid.audioplayer.throttledClick
 
 internal val playbackIconSize = 28.dp
 
@@ -23,17 +24,17 @@ internal fun RowScope.TransportButtons(
     onTogglePlay: () -> Unit,
     onJump: (Int) -> Unit,
 ) {
-    IconButton({ onJump(-1) }, modifier = Modifier.weight(1f), enabled = canGoBack) {
+    IconButton(throttledClick { onJump(-1) }, modifier = Modifier.weight(1f), enabled = canGoBack) {
         Icon(painterResource(R.drawable.ic_playback_rewind), "后退", Modifier.size(playbackIconSize))
     }
-    IconButton(onTogglePlay, modifier = Modifier.weight(1f), enabled = canPlay) {
+    IconButton(throttledClick(onTogglePlay), modifier = Modifier.weight(1f), enabled = canPlay) {
         if (playing) {
             Icon(painterResource(R.drawable.ic_playback_pause), "暂停", Modifier.size(32.dp))
         } else {
             Icon(Icons.Filled.PlayArrow, "播放", Modifier.size(32.dp))
         }
     }
-    IconButton({ onJump(1) }, modifier = Modifier.weight(1f), enabled = canGoForward) {
+    IconButton(throttledClick { onJump(1) }, modifier = Modifier.weight(1f), enabled = canGoForward) {
         Icon(painterResource(R.drawable.ic_playback_forward), "快进", Modifier.size(playbackIconSize))
     }
 }
