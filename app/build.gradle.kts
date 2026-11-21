@@ -1,10 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.kid.audioplayer"
     compileSdk = 37
+    buildFeatures {
+        compose = true
+    }
 
     defaultConfig {
         applicationId = "com.kid.audioplayer"
@@ -30,6 +34,15 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.compose.icons)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.compose)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.session)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
