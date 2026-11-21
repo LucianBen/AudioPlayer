@@ -1,7 +1,6 @@
 package com.kid.audioplayer.player
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.DropdownMenu
@@ -27,12 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -43,11 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kid.audioplayer.BookImage
 import com.kid.audioplayer.R
-import com.kid.audioplayer.data.Book
-import com.kid.audioplayer.data.BookUnit
-import java.io.File
 import kotlin.math.roundToLong
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,52 +65,6 @@ fun PlayerScreen(model: PlayerViewModel, onBack: () -> Unit) {
             }
             state.error?.let { Text(it, Modifier.padding(vertical = 8.dp)) }
         }
-    }
-}
-
-@Composable
-private fun BookPages(
-    book: Book,
-    unit: BookUnit,
-    selected: Int,
-    ready: Boolean,
-    modifier: Modifier,
-    onPageSelected: (Int) -> Unit,
-) {
-    val pager = rememberPagerState(initialPage = selected) { unit.pages.size }
-    var dragOrigin by remember { mutableStateOf<Int?>(null) }
-
-    LaunchedEffect(pager) {
-        pager.interactionSource.interactions.collect { interaction ->
-            if (interaction is DragInteraction.Start && dragOrigin == null) dragOrigin = pager.settledPage
-        }
-    }
-    LaunchedEffect(pager) {
-        snapshotFlow { pager.isScrollInProgress to dragOrigin }.collect { (scrolling, origin) ->
-            if (!scrolling && origin != null) {
-                val settled = pager.settledPage
-                if (settled != origin) onPageSelected(settled)
-                dragOrigin = null
-            }
-        }
-    }
-    if (dragOrigin == null) {
-        LaunchedEffect(pager, selected) {
-            if (pager.settledPage != selected) pager.scrollToPage(selected)
-        }
-    }
-
-    HorizontalPager(
-        state = pager,
-        modifier = modifier.fillMaxWidth(),
-        userScrollEnabled = ready,
-        beyondViewportPageCount = 1,
-    ) { page ->
-        BookImage(
-            File(book.directory, unit.pages[page].image),
-            "第 ${page + 1} 页，共 ${unit.pages.size} 页",
-            Modifier.fillMaxSize(),
-        )
     }
 }
 
