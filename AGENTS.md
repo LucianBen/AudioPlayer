@@ -7,7 +7,7 @@ AudioPlayer 是 Android 本地有声教材播放器。用户从书库选择一�
 - `app/` 是 Android 应用模块，包名为 `com.kid.audioplayer`。使用 Kotlin 和 MVVM，在 `:app` 内按功能划分 `library`、`catalog`、`player` 和 `data` 包，分别负责书库与导入入口、单元目录、播放器与停顿分析、书籍解析与本地存储。
 - 书库、目录和播放器各自使用页面级 `ViewModel`，通过 `StateFlow` 提供界面状态。书籍数据和本地资源操作由 `BookRepository` 统一管理。用单 Activity 和 Navigation Compose 管理页面导航。
 - 界面使用 Jetpack Compose Material 3，跟随系统配色和深浅色。图标按钮提供 TalkBack 可读标签。项目构建使用 JDK 21，App 支持 Android 14 及以上。
-- `audio/` 存放本地验收书籍，由 Git 忽略。《Beyond the Sky》是首版完整样例。实现状态和验证记录见 [ROADMAP.md](ROADMAP.md)。
+- `audio/` 存放随仓库提供的验收书籍。《Beyond the Sky》是首版完整样例。实现状态和验证记录见 [ROADMAP.md](ROADMAP.md)。
 
 ## 书库与本地资源
 
@@ -21,7 +21,7 @@ AudioPlayer 是 Android 本地有声教材播放器。用户从书库选择一�
 - 每个书籍目录内提供一个 UTF-8 JSON。顶层 `title` 是书名，`picture` 是封面路径，`units` 是有序的单元数组。
 - 每个单元包含 `title`、`audio`、`time` 和 `picture`。`audio` 是对应的 MP3 路径。`time` 是由 `start`、`end` 组成的时间段数组，`picture` 是章节图片路径数组，两个数组按索引一一对应。图片可放在书籍子目录下。
 - 时间以秒表示，支持小数，解析后统一转换为毫秒。时间段按起点递增，起点大于等于零，终点大于起点，区间不重叠。每段包含起点，下一段从边界本身开始。资源引用使用书籍目录内的相对路径。
-- 真实数据结构参考本地样例 `audio/Beyond the Sky/Beyond the Sky.json`。
+- 真实数据结构参考 [Beyond the Sky.json](audio/Beyond%20the%20Sky/Beyond%20the%20Sky.json)。
 
 ## 播放与图音同步
 

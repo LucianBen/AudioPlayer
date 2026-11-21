@@ -1,0 +1,76 @@
+{
+  "title": "Beyond the Sky",
+  "picture": "book.jpg",
+  "units": [
+    {
+      "title": "Unit 1 My Classroom",
+      "audio": "Unit 1.mp3",
+      "time": [
+        { "start": 0, "end": 34.94 },
+        { "start": 34.94, "end": 86.54 },
+        { "start": 86.54, "end": 134.48 },
+        { "start": 134.48, "end": 226.96 },
+        { "start": 226.96, "end": 277.92 },
+        { "start": 277.92, "end": 365.58 },
+        { "start": 365.58, "end": 412.18 },
+        { "start": 412.18, "end": 480.325 }
+      ],
+      "picture": [
+        "unit1/1.jpg",
+        "unit1/2.jpg",
+        "unit1/3.jpg",
+        "unit1/4.jpg",
+        "unit1/5.jpg",
+        "unit1/6.jpg",
+        "unit1/7.jpg",
+        "unit1/8.jpg"
+      ]
+    },
+    {
+      "title": "Unit 2 My Favorite Food",
+      "audio": "Unit 2.mp3",
+      "time": [
+        { "start": 0, "end": 46.26 },
+        { "start": 46.26, "end": 87.06 },
+        { "start": 87.06, "end": 159.44 },
+        { "start": 159.44, "end": 244.5 },
+        { "start": 244.5, "end": 291.44 },
+        { "start": 291.44, "end": 352.458 }
+      ],
+      "picture": [
+        "unit2/1.jpg",
+        "unit2/2.jpg",
+        "unit2/3.jpg",
+        "unit2/4.jpg",
+        "unit2/5.jpg",
+        "unit2/6.jpg"
+      ]
+    },
+    {
+      "title": "Unit 3 My Toys",
+      "audio": "Unit 3.mp3",
+      "time": [
+        { "start": 0, "end": 36.8 },
+        { "start": 36.8, "end": 88.4 },
+        { "start": 88.4, "end": 161.72 },
+        { "start": 161.72, "end": 253.8 },
+        { "start": 253.8, "end": 300.7 },
+        { "start": 300.7, "end": 393.32 },
+        { "start": 393.32, "end": 439.98 },
+        { "start": 439.98, "end": 550.72 },
+        { "start": 550.72, "end": 618.853 }
+      ],
+      "picture": [
+        "unit3/1.jpg",
+        "unit3/2.jpg",
+        "unit3/3.jpg",
+        "unit3/4.jpg",
+        "unit3/5.jpg",
+        "unit3/6.jpg",
+        "unit3/7.jpg",
+        "unit3/8.jpg",
+        "unit1/8.jpg"
+      ]
+    }
+  ]
+}
